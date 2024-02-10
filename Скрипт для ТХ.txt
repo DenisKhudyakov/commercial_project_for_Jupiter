@@ -1,0 +1,17 @@
+%pip install xlwt
+%pip install xlrd
+%pip install Jinja2
+%pip install openpyxl
+import numpy as np
+import pandas as pd
+def highlight_greaterthan_1(s):
+    if s['Unnamed: 5'] == 'Да':
+        return ['background-color: green']*12
+    else:
+        return ['background-color: white']*12
+df = pd.read_excel('2069.xls')
+df = df.replace({np.nan:0})
+new_df = df[2:]
+new_df = new_df[new_df['Unnamed: 6'] - new_df['Unnamed: 9'] > 0]
+new_df = pd.concat([df[:3], new_df])
+new_df = new_df.style.apply(highlight_greaterthan_1, axis=1).to_excel('Товары к закупу.xlsx', index=False, header= False, engine='openpyxl')

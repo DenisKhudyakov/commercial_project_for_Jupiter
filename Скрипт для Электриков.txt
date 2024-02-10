@@ -1,0 +1,11 @@
+%pip install xlwt
+%pip install xlrd
+import numpy as np
+import pandas as pd
+df = pd.read_excel('2069.xls')
+df = df.replace({np.nan:0})
+new_df = df[2:]
+new_df = new_df[new_df['Unnamed: 6'] - new_df['Unnamed: 9'] > 0]
+new_df = new_df[new_df['Unnamed: 5'] == 'Нет']
+result = pd.concat([df[:3], new_df])
+result.to_excel('Товары к закупу.xls', index=False, header= False)
