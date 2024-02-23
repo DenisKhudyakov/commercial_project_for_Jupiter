@@ -4,15 +4,15 @@
 import numpy as np
 import pandas as pd
 
-df_form = pd.read_excel('Формуляр 1919.xls')
-df_etap = pd.read_excel('Этапы 1919.xls')
+df_form = pd.read_excel('2107 формуляр.xls')
+df_etap = pd.read_excel('2107 этапы.xls')
 df_form = df_form.drop(columns=['Unnamed: 3', 'Unnamed: 1', 'Unnamed: 2', 'Unnamed: 5','Unnamed: 7', 'Unnamed: 13'])
 df_form = df_form.rename(columns = {'Unnamed: 4':'Unnamed: 3'})
 df_form_head = df_form[:6]
 df_etap = df_etap.replace({np.nan:0})
 new_df = df_etap[4:]
-new_df = new_df[new_df['Unnamed: 6'] - new_df['Unnamed: 9'] > 0]
+new_df = new_df[(new_df['Unnamed: 6'] - new_df['Unnamed: 9'] > 0) | (new_df['Unnamed: 6'] - new_df['Unnamed: 10'] > 0)]
 new_df = new_df[(new_df['Unnamed: 5'] == 'Нет') | (new_df['Unnamed: 5'] == 0)]
 df_etap = pd.concat([df_etap[:4], new_df])
 result = pd.merge(df_etap, df_form, how="left", on='Unnamed: 3')
-result.to_excel('Результат сведения таблиц.xlsx', index=False, header= False)
+result.to_excel('Результат сведения таблиц.xlsx', index=False, header=False)
